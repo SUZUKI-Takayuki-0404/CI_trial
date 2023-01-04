@@ -1,11 +1,10 @@
 name: Java CI
-
 on: [ push, pull_request ]
-
+permissions:
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -20,5 +19,5 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-      - name: Build with Gradle
+      - name: Conduct Tests
         run: ./gradlew test
