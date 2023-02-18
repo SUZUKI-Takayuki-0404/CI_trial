@@ -4,6 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'checkstyle'
     id 'jacoco'
+    id 'com.github.spotbugs' version '5.0.13'
 }
 
 group = 'sep2022'
@@ -14,6 +15,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    spotbugsStylesheets { transitive = false }
 }
 
 repositories {
@@ -33,10 +35,14 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.0'
+    spotbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.4.7'
+    testImplementation group: 'org.slf4j', name: 'slf4j-log4j12', version: '2.0.0-alpha0'
+    spotbugsStylesheets 'com.github.spotbugs:spotbugs:${spotbugsVersion}'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
 
 checkstyle {
@@ -44,10 +50,21 @@ checkstyle {
 }
 
 jacocoTestReport {
+    dependsOn test
     reports {
         xml.enabled true
         html.enabled false
     }
 }
 
-check.dependsOn jacocoTestReport
+spotbugs {
+    ignoreFailures = true
+    spotbugsTest.enabled = false
+    reportsDir = file("$project.buildDir/reports")
+}
+
+spotbugsMain {
+    reports {
+        html.enabled = true
+    }
+}

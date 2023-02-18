@@ -46,6 +46,7 @@ class AirportMapperTest {
         assertThat(airportMapper.findAll()).isEmpty();
     }
 
+    /*
     @Test
     void findById() {
     }
@@ -61,4 +62,5 @@ class AirportMapperTest {
     @Test
     void deleteById() {
     }
+    */
 }
