@@ -59,6 +59,7 @@ jacocoTestReport {
 
 spotbugs {
     ignoreFailures = true
+    spotbugsMain.enabled = true
     spotbugsTest.enabled = false
     reportsDir = file("$project.buildDir/reports")
 }
